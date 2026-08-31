@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#2563eb" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="单词闪回器" />
+<title>八年级英语单词闪回器 V3｜移动端教师版</title>
+<style>
+:root{
+  --bg:#f5f7fb;--card:#fff;--ink:#172033;--muted:#6b7280;--line:#e5e7eb;
+  --accent:#2563eb;--accent2:#eff6ff;--good:#15803d;--goodbg:#dcfce7;
+  --bad:#b91c1c;--badbg:#fee2e2;--warn:#92400e;--warnbg:#fef3c7;
+  --shadow:0 8px 28px rgba(15,23,42,.08);--radius:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif}
+body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+button,select,input,textarea{font:inherit}
+button{border:0;cursor:pointer;touch-action:manipulation}
+button:disabled{opacity:.42;cursor:not-allowed}
+.app{max-width:960px;margin:0 auto}
+.topbar{position:sticky;top:0;z-index:40;background:rgba(245,247,251,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(229,231,235,.8);padding:calc(10px + env(safe-area-inset-top)) 14px 10px}
+.toprow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{min-width:0}
+.brand h1{font-size:18px;line-height:1.2;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand .sub{font-size:12px;color:var(--muted);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.quick-icons{display:flex;gap:8px;flex-shrink:0}
+.iconbtn{width:42px;height:42px;border-radius:13px;background:#fff;border:1px solid var(--line);display:grid;place-items:center;font-size:18px;box-shadow:0 2px 8px rgba(15,23,42,.04)}
+.progressline{height:5px;background:#e9eef7;border-radius:999px;overflow:hidden;margin-top:9px}.progressline>span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s ease}
+.content{padding:14px}
+.view{display:none}.view.active{display:block}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;margin-bottom:14px}
+.section-title{font-size:15px;font-weight:800;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.muted{font-size:12px;color:var(--muted);line-height:1.6}
+.mobile-controls{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.field label{display:block;font-size:11px;color:var(--muted);margin:0 0 5px 2px}
+select,input[type=text],textarea,input[type=file]{width:100%;border:1px solid var(--line);border-radius:13px;background:#fff;padding:11px 12px;color:var(--ink);outline:none;min-height:44px}
+select:focus,input:focus,textarea:focus{border-color:#93c5fd;box-shadow:0 0 0 3px #dbeafe}
+textarea{min-height:110px;resize:vertical}
+.primary,.secondary,.danger,.success,.warning{min-height:46px;border-radius:14px;padding:10px 14px;font-weight:800}
+.primary{background:var(--accent);color:#fff}.secondary{background:#eef2ff;color:#1e40af}.danger{background:var(--badbg);color:var(--bad)}.success{background:var(--goodbg);color:var(--good)}.warning{background:var(--warnbg);color:var(--warn)}
+.full{width:100%}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center}.stat b{font-size:19px;display:block}.stat span{font-size:10px;color:var(--muted)}
+.flash-card{background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);min-height:52vh;display:flex;flex-direction:column;justify-content:space-between;padding:16px;overflow:hidden;position:relative}
+.badges{display:flex;gap:7px;flex-wrap:wrap}.badge{font-size:11px;padding:5px 8px;border-radius:999px;background:#f3f4f6}.p1{background:var(--badbg);color:#991b1b}.p2{background:var(--warnbg);color:#92400e}.p3{background:#e0f2fe;color:#075985}.star{background:#ede9fe;color:#5b21b6}.wrongbadge{background:var(--badbg);color:var(--bad)}
+.wordarea{text-align:center;padding:20px 6px 16px;user-select:none}.word{font-size:clamp(42px,12vw,78px);font-weight:900;letter-spacing:.3px;line-height:1.06;word-break:break-word}.ipa{font-size:clamp(16px,4vw,21px);color:var(--muted);margin-top:12px}.zh{font-size:clamp(17px,4.5vw,23px);font-weight:700;margin-top:11px;line-height:1.35}.teacherhint{font-size:12px;color:var(--muted);margin-top:14px}
+.card-actions{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:9px}.card-actions button{min-height:52px;border-radius:15px;font-weight:850;font-size:14px}.wrong-main{background:var(--badbg);color:var(--bad)}.wrong-main.active{background:var(--bad);color:#fff}.navbtn{background:#f3f4f6;color:#334155}.nextbtn{background:var(--accent);color:white}
+.swipehint{text-align:center;font-size:11px;color:#9ca3af;margin-top:8px}
+.empty{text-align:center;padding:50px 10px}.empty h2{font-size:22px;margin:0 0 8px}.empty p{color:var(--muted);font-size:13px;line-height:1.6;margin:0}
+.session-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.wordchip{min-height:48px;border:1px solid var(--line);background:#fff;border-radius:13px;padding:10px 12px;font-size:14px;display:flex;align-items:center;justify-content:space-between;gap:8px;user-select:none}.wordchip.wrong{border-color:#fecaca;background:var(--badbg);color:#991b1b;font-weight:800}.wordchip.flower{opacity:.55}.chip-num{font-size:11px;color:#9ca3af;flex-shrink:0}
+.batchbar{position:sticky;bottom:calc(76px + env(safe-area-inset-bottom));z-index:20;background:linear-gradient(to top,var(--bg) 78%,rgba(245,247,251,0));padding-top:14px}.batchbar-inner{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.photo-preview{display:none;margin-top:10px;max-height:52vh;overflow:auto;border:1px solid var(--line);border-radius:14px;background:#fafafa;padding:6px}.photo-preview img{width:100%;height:auto;border-radius:10px;display:block}
+.wrongbox{min-height:74px;border:1px dashed var(--line);border-radius:13px;padding:9px}.wrongitem{display:inline-flex;margin:3px;padding:7px 9px;background:var(--badbg);color:#991b1b;border-radius:999px;font-size:12px}.wordlist{display:grid;grid-template-columns:1fr;gap:7px}.wordrow{border-bottom:1px dashed #edf0f5;padding:8px 2px;font-size:13px;display:flex;justify-content:space-between;gap:10px}.wordrow .m{color:var(--muted);text-align:right}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:8px}.check{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:13px;padding:10px 11px;background:#fff;min-height:44px;font-size:13px}.check input{width:18px;height:18px}
+.setting-group{display:grid;gap:10px}.callout{background:var(--accent2);border:1px solid #bfdbfe;color:#1e3a8a;border-radius:14px;padding:11px 12px;font-size:12px;line-height:1.65}
+.rowbuttons{display:grid;grid-template-columns:1fr 1fr;gap:9px}.rowbuttons3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.bottomnav{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(255,255,255,.96);backdrop-filter:blur(18px);border-top:1px solid var(--line);padding:7px 8px calc(7px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(4,1fr)}
+.tabbtn{background:transparent;color:#64748b;padding:6px 3px;border-radius:12px;font-size:11px;min-height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}.tabbtn .ico{font-size:20px;line-height:1}.tabbtn.active{color:#1d4ed8;background:#eff6ff;font-weight:800}
+.toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(12px);background:#111827;color:#fff;padding:10px 14px;border-radius:999px;font-size:12px;opacity:0;pointer-events:none;transition:.2s;z-index:80;max-width:86vw;text-align:center}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.modalback{position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:90;display:none;align-items:flex-end;justify-content:center}.modalback.show{display:flex}.sheet{width:100%;max-width:720px;background:white;border-radius:22px 22px 0 0;padding:16px 16px calc(18px + env(safe-area-inset-bottom));max-height:82vh;overflow:auto}.sheet h3{margin:0 0 10px}.sheet .handle{width:42px;height:5px;border-radius:999px;background:#d1d5db;margin:0 auto 14px}
+@media(min-width:700px){body{padding-bottom:20px}.bottomnav{position:sticky;bottom:0;max-width:680px;margin:14px auto;border:1px solid var(--line);border-radius:18px;padding:6px;box-shadow:var(--shadow)}.content{padding:18px}.topbar{border-radius:0 0 18px 18px}.mobile-controls{grid-template-columns:repeat(4,1fr)}.stats{grid-template-columns:repeat(5,1fr)}.flash-card{min-height:500px}.session-list{grid-template-columns:repeat(3,minmax(0,1fr))}.batchbar{bottom:88px}.checks{grid-template-columns:repeat(3,1fr)}}
+@media(orientation:landscape) and (max-height:600px){.flash-card{min-height:calc(100vh - 190px);padding:12px}.wordarea{padding:8px 4px}.word{font-size:clamp(38px,8vw,64px)}.ipa{margin-top:7px}.zh{margin-top:6px}.teacherhint{display:none}.card-actions button{min-height:44px}.stats{display:none}.content{padding-top:8px}.topbar{padding-top:calc(6px + env(safe-area-inset-top));padding-bottom:6px}.brand .sub{display:none}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="toprow">
+      <div class="brand">
+        <h1>📚 单词闪回器 · 教师版</h1>
+        <div class="sub" id="headerSub">Unit 1 · 第1轮（课前）</div>
+      </div>
+      <div class="quick-icons">
+        <button class="iconbtn" id="wakeBtn" title="屏幕常亮">☀️</button>
+        <button class="iconbtn" id="fullBtn" title="全屏">⛶</button>
+      </div>
+    </div>
+    <div class="progressline"><span id="progressBar"></span></div>
+  </header>
+
+  <main class="content">
+    <section id="view-flash" class="view active">
+      <div class="panel">
+        <div class="mobile-controls">
+          <div class="field"><label>轮次</label><select id="round"><option value="1">第1轮 · 课前</option><option value="2">第2轮 · 课中</option><option value="3">第3轮 · 课后</option><option value="4">第4轮 · 补漏</option><option value="5">第5轮 · 补漏</option></select></div>
+          <div class="field"><label>范围</label><select id="scope"><option value="all">全部未开花词</option><option value="wrong">历史错词池</option><option value="p1">P1 重难点</option></select></div>
+          <div class="field"><label>数量</label><select id="limit"><option value="0">全部</option><option value="10">10词</option><option value="15" selected>15词</option><option value="20">20词</option></select></div>
+          <div style="display:flex;align-items:end"><button class="primary full" id="startBtn">开始本轮</button></div>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><b id="sTotal">0</b><span>本轮词数</span></div>
+        <div class="stat"><b id="sSeen">0</b><span>当前位置</span></div>
+        <div class="stat"><b id="sMarkedWrong">0</b><span>已标错</span></div>
+        <div class="stat"><b id="sPool">0</b><span>错词池</span></div>
+        <div class="stat" style="display:none" id="flowerStat"><b id="sFlower">0</b><span>已开花</span></div>
+      </div>
+
+      <div class="flash-card" id="flashCard">
+        <div id="cardInner" class="empty">
+          <h2>准备好后开始本轮</h2>
+          <p>教师看屏幕读英文，学生只在听写本手写。<br>建议第一次：P1 + P2，15个词。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-grade" class="view">
+      <div class="panel">
+        <div class="section-title"><span>📝 本轮批改</span><span class="muted" id="gradeSummary">未开始</span></div>
+        <div class="callout">只需要点错词。未标红的单词在“写入学习记录”时会按正确处理。</div>
+        <div id="sessionList" class="session-list" style="margin-top:12px"></div>
+        <div class="batchbar"><div class="batchbar-inner"><button class="secondary" id="restartBtn">重新生成</button><button class="primary" id="finalizeBtn">写入学习记录</button></div></div>
+      </div>
+
+      <div class="panel">
+        <div class="section-title">📷 听写纸辅助批改</div>
+        <input type="file" id="photoInput" accept="image/*" capture="environment" />
+        <div id="photoPreview" class="photo-preview"><img id="photoImg" alt="听写纸预览" /></div>
+        <div class="muted" style="margin-top:8px">手机可直接拍照。V3 仍以人工点错词为主，避免手写 OCR 误判污染学习记录。</div>
+      </div>
+
+      <div class="panel">
+        <div class="section-title">🤖 批量标错（可选）</div>
+        <textarea id="pasteWrong" placeholder="如果你把听写照片交给 ChatGPT 分析，可把返回的错词粘贴在这里：\ncommunity\nattention\ncompetition"></textarea>
+        <button class="secondary full" id="applyWrong" style="margin-top:9px">按清单一键标错</button>
+      </div>
+    </section>
+
+    <section id="view-record" class="view">
+      <div class="panel">
+        <div class="section-title"><span>🔴 历史错词池</span><span class="muted" id="wrongCountLabel"></span></div>
+        <div id="wrongPoolBox" class="wrongbox">暂无</div>
+      </div>
+      <div class="panel">
+        <div class="section-title">➕ 临时新增错词</div>
+        <textarea id="customInput" placeholder="每行一个：word | 中文释义 | /音标/\n例如：beautiful | 美丽的 | /ˈbjuːtɪfl/"></textarea>
+        <button class="secondary full" id="addCustom" style="margin-top:9px">加入八年级错词库</button>
+      </div>
+      <div class="panel">
+        <details open>
+          <summary style="font-weight:800;cursor:pointer">查看 Unit 1 词库</summary>
+          <div id="libraryList" class="wordlist" style="margin-top:10px"></div>
+        </details>
+      </div>
+    </section>
+
+    <section id="view-settings" class="view">
+      <div class="panel">
+        <div class="section-title">⚙️ 抽词设置</div>
+        <div class="setting-group">
+          <div class="field"><label>出词顺序</label><select id="order"><option value="priority" selected>重难点优先 + 层内随机</option><option value="random">完全随机</option></select></div>
+          <div class="checks">
+            <label class="check"><input type="checkbox" id="p1" checked> P1 重难点</label>
+            <label class="check"><input type="checkbox" id="p2" checked> P2 基础必会</label>
+            <label class="check"><input type="checkbox" id="p3"> P3 低难度</label>
+            <label class="check"><input type="checkbox" id="starred"> 包含 * 识读词</label>
+            <label class="check"><input type="checkbox" id="includeFlower"> 包含已开花词</label>
+          </div>
+          <div class="callout"><b>* 词规则：</b>只要求会读和理解，默认不进入听写拼写。错词在后续轮次优先出现，连续 3 个不同轮次正确后开花。</div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="section-title">💾 数据与备份</div>
+        <div class="rowbuttons"><button class="secondary" id="exportBtn">导出 CSV</button><button class="secondary" id="backupBtn">备份 JSON</button></div>
+        <div class="rowbuttons" style="margin-top:9px"><button class="secondary" id="importBtn">导入备份</button><button class="warning" id="clearWrong">清空错词池</button></div>
+        <input type="file" id="importFile" accept="application/json,.json" style="display:none" />
+        <button class="danger full" id="resetBtn" style="margin-top:9px">重置全部学习进度</button>
+        <div class="muted" style="margin-top:9px">学习记录保存在当前浏览器。换手机/平板前，建议先“备份 JSON”，再在新设备导入。</div>
+      </div>
+      <div class="panel">
+        <div class="section-title">📱 移动端提示</div>
+        <div class="muted">• 上课时可点击右上角 ☀️ 尝试保持屏幕常亮。<br>• 点击 ⛶ 可进入全屏。<br>• 闪词页支持左右滑动切词；错词仍请点击中间“标错”按钮，防止误触。<br>• 如果把此文件托管成 HTTPS 网页，可在 Safari/Chrome 中“添加到主屏幕”，使用体验会更接近小程序。</div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<nav class="bottomnav">
+  <button class="tabbtn active" data-view="flash"><span class="ico">⚡</span><span>闪词</span></button>
+  <button class="tabbtn" data-view="grade"><span class="ico">📝</span><span>批改</span></button>
+  <button class="tabbtn" data-view="record"><span class="ico">📚</span><span>错词库</span></button>
+  <button class="tabbtn" data-view="settings"><span class="ico">⚙️</span><span>设置</span></button>
+</nav>
+<div class="toast" id="toast"></div>
+
+<div class="modalback" id="doneModal">
+  <div class="sheet">
+    <div class="handle"></div>
+    <h3 id="doneTitle">本轮已保存</h3>
+    <div id="doneBody" class="muted"></div>
+    <div class="rowbuttons" style="margin-top:14px"><button class="secondary" id="closeDone">留在本轮</button><button class="primary" id="nextRoundBtn">进入下一轮</button></div>
+  </div>
+</div>
+
+<script>
+const UNIT1 = [
+  {unit:'U1',w:'advice',ipa:"/əd'vaɪs/",pos:'n.',zh:'建议',p:1},
+  {unit:'U1',w:'encourage',ipa:"/ɪn'kʌrɪdʒ/",pos:'v.',zh:'鼓励；激励',p:1},
+  {unit:'U1',w:'cheerful',ipa:"/'tʃɪəfl/",pos:'adj.',zh:'快乐的；高兴的',p:1},
+  {unit:'U1',w:'community',ipa:"/kə'mjuːnəti/",pos:'n.',zh:'社区',p:1},
+  {unit:'U1',w:'medical',ipa:"/'medɪkl/",pos:'adj.',zh:'医学的；医疗的',p:1},
+  {unit:'U1',w:'wherever',ipa:"/weər'evə(r)/",pos:'conj.',zh:'各处；处处',p:1},
+  {unit:'U1',w:'attention',ipa:"/ə'tenʃn/",pos:'n.',zh:'专心；注意力',p:1},
+  {unit:'U1',w:'seldom',ipa:"/'seldəm/",pos:'adv.',zh:'不常；很少；难得',p:1},
+  {unit:'U1',w:'bored',ipa:"/bɔːd/",pos:'adj.',zh:'（对某人/事物）厌倦的；烦闷的',p:1},
+  {unit:'U1',w:'strict',ipa:"/strɪkt/",pos:'adj.',zh:'要求严格的；严厉的',p:1},
+  {unit:'U1',w:'relative',ipa:"/'relətɪv/",pos:'n.',zh:'亲戚；亲属',p:1},
+  {unit:'U1',w:'uniform',ipa:"/'juːnɪfɔːm/",pos:'n.',zh:'制服；校服',p:1},
+  {unit:'U1',w:'personality',ipa:"/ˌpɜːsə'næləti/",pos:'n.',zh:'性格；个性',p:1},
+  {unit:'U1',w:'characteristic',ipa:"/ˌkærəktə'rɪstɪk/",pos:'n.',zh:'特点；品质',p:1},
+  {unit:'U1',w:'active',ipa:"/'æktɪv/",pos:'adj.',zh:'忙碌的；活跃的',p:1},
+  {unit:'U1',w:'wisely',ipa:"/'waɪzli/",pos:'adv.',zh:'聪明地；明智地',p:1},
+  {unit:'U1',w:'competition',ipa:"/ˌkɒmpə'tɪʃn/",pos:'n.',zh:'比赛；竞赛',p:1},
+  {unit:'U1',w:'used to',ipa:'',pos:'phr.',zh:'曾经',p:1},
+  {unit:'U1',w:'be strict about',ipa:'',pos:'phr.',zh:'对……要求严格',p:1},
+  {unit:'U1',w:'be worried about',ipa:'',pos:'phr.',zh:'担心',p:1},
+  {unit:'U1',w:'retire',ipa:"/rɪ'taɪə(r)/",pos:'v.',zh:'（令）退职；（使）退休',p:2},
+  {unit:'U1',w:'future',ipa:"/'fjuːtʃə(r)/",pos:'n.',zh:'将来；未来',p:2},
+  {unit:'U1',w:'soon',ipa:"/suːn/",pos:'adv.',zh:'很快；马上；不久',p:2},
+  {unit:'U1',w:'smart',ipa:"/smɑːt/",pos:'adj.',zh:'聪明的；机敏的',p:2},
+  {unit:'U1',w:'topic',ipa:"/'tɒpɪk/",pos:'n.',zh:'话题；标题',p:2},
+  {unit:'U1',w:'smartphone',ipa:"/'smɑːtfəʊn/",pos:'n.',zh:'智能手机',p:2},
+  {unit:'U1',w:'shower',ipa:"/'ʃaʊə(r)/",pos:'n.',zh:'淋浴',p:2},
+  {unit:'U1',w:'online',ipa:"/ˌɒn'laɪn/",pos:'adj.',zh:'在线的',p:2},
+  {unit:'U1',w:'site',ipa:"/saɪt/",pos:'n.',zh:'建筑工地',p:2},
+  {unit:'U1',w:'narrow',ipa:"/'nærəʊ/",pos:'adj.',zh:'狭窄的；窄小的',p:2},
+  {unit:'U1',w:'give up',ipa:'',pos:'phr.',zh:'认输；放弃',p:2},
+  {unit:'U1',w:'in the future',ipa:'',pos:'phr.',zh:'在未来',p:2},
+  {unit:'U1',w:'superman',ipa:"/'suːpəmæn/",pos:'n.',zh:'超人',p:3},
+  {unit:'U1',w:'fried',ipa:"/fraɪd/",pos:'adj.',zh:'油炸的；油煎的；油炒的',p:3,star:true}
+];
+
+const KEY='flashback_grade8_teacher_v3';
+let saved;
+try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){saved={}}
+saved.progress ||= {}; saved.wrongPool ||= []; saved.custom ||= []; saved.sessions ||= [];
+const $=id=>document.getElementById(id);
+const norm=s=>String(s||'').toLowerCase().trim().replace(/[’']/g,"'").replace(/\s+/g,' ');
+const keyOf=x=>(x.unit||'U1')+'::'+norm(x.w);
+const today=()=>new Date().toLocaleDateString('zh-CN');
+function allWords(){return [...UNIT1,...saved.custom]}
+function prog(x){const k=keyOf(x);saved.progress[k] ||= {streak:0,flower:false,right:0,wrong:0,attempts:0,lastRound:0,lastResult:'',lastDate:'',history:[]};return saved.progress[k]}
+function save(){localStorage.setItem(KEY,JSON.stringify(saved));renderAll()}
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function toast(msg){const el=$('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),1800)}
+function setView(name){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));$('view-'+name).classList.add('active');document.querySelectorAll('.tabbtn').forEach(b=>b.classList.toggle('active',b.dataset.view===name));window.scrollTo({top:0,behavior:'smooth'});}
+document.querySelectorAll('.tabbtn').forEach(b=>b.onclick=()=>setView(b.dataset.view));
+
+let queue=[],idx=0,markedWrong=new Set(),sessionFinalized=false;
+function selectedWords(){
+  const ps=[];if($('p1').checked)ps.push(1);if($('p2').checked)ps.push(2);if($('p3').checked)ps.push(3);
+  let arr=allWords().filter(x=>ps.includes(x.p||1));
+  if(!$('starred').checked)arr=arr.filter(x=>!x.star);
+  if(!$('includeFlower').checked)arr=arr.filter(x=>!prog(x).flower);
+  const scope=$('scope').value;
+  if(scope==='wrong')arr=arr.filter(x=>saved.wrongPool.includes(keyOf(x)));
+  if(scope==='p1')arr=arr.filter(x=>(x.p||1)===1);
+  if($('order').value==='priority')arr=[1,2,3].flatMap(p=>shuffle(arr.filter(x=>(x.p||1)===p)));else arr=shuffle(arr);
+  const limit=Number($('limit').value||0);if(limit>0)arr=arr.slice(0,limit);return arr;
+}
+function startRound(){
+  queue=selectedWords();idx=0;markedWrong=new Set();sessionFinalized=false;
+  if(!queue.length){$('cardInner').className='empty';$('cardInner').innerHTML='<h2>当前范围没有可抽词</h2><p>换一个范围，或到“设置”勾选其他词层级。</p>';renderAll();return}
+  showCard();renderSessionList();renderAll();setView('flash');toast('本轮词单已生成');
+}
+function showCard(){
+  if(!queue.length)return;
+  const x=queue[idx],wrong=markedWrong.has(keyOf(x));
+  $('cardInner').className='';
+  $('cardInner').innerHTML=`
+    <div class="badges"><span class="badge p${x.p||1}">P${x.p||1} ${x.p===1?'重难点':x.p===2?'基础必会':'低难度'}</span>${x.star?'<span class="badge star">* 识读词</span>':''}<span class="badge">${x.pos||''}</span><span class="badge">连对 ${prog(x).streak}/3</span>${wrong?'<span class="badge wrongbadge">已标错</span>':''}</div>
+    <div class="wordarea" onclick="speakCurrent()">
+      <div class="word">${x.w}</div><div class="ipa">${x.ipa||''}</div><div class="zh">${x.zh}</div><div class="teacherhint">教师看词后读给学生听 · 点单词可播放读音</div>
+    </div>
+    <div><div class="card-actions"><button class="navbtn" onclick="prevCard()" ${idx===0?'disabled':''}>← 上一个</button><button class="wrong-main ${wrong?'active':''}" onclick="toggleCurrentWrong()">${wrong?'❌ 已标错':'标错 ❌'}</button><button class="nextbtn" onclick="nextCard()">${idx===queue.length-1?'去批改':'下一个 →'}</button></div><div class="swipehint">${idx+1} / ${queue.length} · 左滑下一词，右滑上一词</div></div>`;
+  renderAll();
+}
+function speak(text){if(!('speechSynthesis' in window)){toast('当前浏览器不支持语音合成');return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-GB';u.rate=.92;speechSynthesis.speak(u)}
+window.speakCurrent=()=>queue[idx]&&speak(queue[idx].w);
+window.toggleCurrentWrong=()=>{if(!queue[idx])return;toggleWrong(keyOf(queue[idx]));showCard()};
+window.prevCard=()=>{if(idx>0){idx--;showCard()}};
+window.nextCard=()=>{if(!queue.length)return;if(idx<queue.length-1){idx++;showCard()}else{renderSessionList();setView('grade')}};
+function toggleWrong(k){markedWrong.has(k)?markedWrong.delete(k):markedWrong.add(k);renderSessionList();renderAll()}
+window.toggleWordByIndex=i=>{if(!queue[i])return;toggleWrong(keyOf(queue[i]))};
+function renderSessionList(){
+  if(!queue.length){$('sessionList').innerHTML='<div class="muted">还没有本轮词单，请先到“闪词”开始。</div>';return}
+  $('sessionList').innerHTML=queue.map((x,i)=>`<button class="wordchip ${markedWrong.has(keyOf(x))?'wrong':''} ${prog(x).flower?'flower':''}" onclick="toggleWordByIndex(${i})"><span>${x.w}${markedWrong.has(keyOf(x))?' ❌':''}</span><span class="chip-num">${i+1}</span></button>`).join('');
+}
+function finalizeSession(){
+  if(!queue.length){toast('还没有本轮词单');return}if(sessionFinalized){toast('本轮已经写入记录');return}
+  const round=Number($('round').value),date=today(),wrongWords=[];
+  for(const x of queue){
+    const k=keyOf(x),wrong=markedWrong.has(k),p=prog(x);p.attempts++;p.lastRound=round;p.lastDate=date;p.lastResult=wrong?'wrong':'right';
+    if(wrong){p.wrong++;p.streak=0;p.flower=false;if(!saved.wrongPool.includes(k))saved.wrongPool.push(k);wrongWords.push(x.w)}
+    else{p.right++;const prev=p.history[p.history.length-1];if(!(prev&&prev.round===round&&prev.result==='right'&&prev.date===date))p.streak++;if(p.streak>=3){p.flower=true;saved.wrongPool=saved.wrongPool.filter(v=>v!==k)}}
+    p.history.push({date,round,result:wrong?'wrong':'right'});if(p.history.length>30)p.history=p.history.slice(-30);
+  }
+  saved.sessions.push({date,round,words:queue.map(x=>x.w),wrong:[...markedWrong]});if(saved.sessions.length>100)saved.sessions=saved.sessions.slice(-100);
+  sessionFinalized=true;save();
+  $('doneTitle').textContent=`第 ${round} 轮已保存 ✅`;
+  $('doneBody').innerHTML=`本轮 ${queue.length} 词，错词 <b>${wrongWords.length}</b> 个。${wrongWords.length?'<br>错词：<b>'+wrongWords.join('、')+'</b>':'<br>本轮全对 🌟'}<br><br>错词会留在错词池，连续 3 个不同轮次正确后才会开花。`;
+  $('doneModal').classList.add('show');
+}
+function renderStats(){
+  $('sTotal').textContent=queue.length||0;$('sSeen').textContent=queue.length?`${idx+1}/${queue.length}`:'0';$('sMarkedWrong').textContent=markedWrong.size;$('sPool').textContent=saved.wrongPool.length;$('sFlower').textContent=allWords().filter(x=>prog(x).flower).length;
+  $('gradeSummary').textContent=queue.length?`${queue.length} 词 · 已标错 ${markedWrong.size}`:'未开始';
+  $('wrongCountLabel').textContent=`${saved.wrongPool.length} 个`;
+  const pct=queue.length?((idx+1)/queue.length*100):0;$('progressBar').style.width=pct+'%';
+  const r=$('round').value;$('headerSub').textContent=`Unit 1 · 第${r}轮${r==='1'?'（课前）':r==='2'?'（课中）':r==='3'?'（课后）':'（补漏）'}`;
+}
+function renderWrong(){const ws=allWords().filter(x=>saved.wrongPool.includes(keyOf(x)));$('wrongPoolBox').innerHTML=ws.length?ws.map(x=>`<span class="wrongitem">${x.w} · 错${prog(x).wrong}次 · 连对${prog(x).streak}/3</span>`).join(''):'暂无'}
+function renderLibrary(){const sorted=[...allWords()].sort((a,b)=>(a.unit||'').localeCompare(b.unit||'')||(a.p||1)-(b.p||1)||a.w.localeCompare(b.w));$('libraryList').innerHTML=sorted.map(x=>{const p=prog(x);return `<div class="wordrow"><span><b>${x.w}</b>${x.star?' *':''}<br><span class="muted">${x.ipa||''}</span></span><span class="m">P${x.p||1} · ${x.zh}<br>${p.flower?'🌸 已开花':'连对 '+p.streak+'/3'}</span></div>`}).join('')}
+function renderAll(){renderStats();renderWrong();renderLibrary();renderSessionList()}
+
+$('startBtn').onclick=startRound;$('restartBtn').onclick=startRound;
+$('finalizeBtn').onclick=()=>{if(!queue.length){toast('还没有本轮词单');return}if(confirm('未标红的词将按“正确”写入记录。确认完成本轮批改吗？'))finalizeSession()};
+$('applyWrong').onclick=()=>{if(!queue.length){toast('请先开始一个听写轮次');return}const words=$('pasteWrong').value.split(/[\n,，;；]+/).map(norm).filter(Boolean);let matched=0,missed=[];for(const w of words){const x=queue.find(v=>norm(v.w)===w);if(x){markedWrong.add(keyOf(x));matched++}else missed.push(w)}renderAll();toast(`已标错 ${matched} 个${missed.length?'，'+missed.length+' 个未匹配':''}`)};
+$('photoInput').onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f){$('photoPreview').style.display='none';return}const url=URL.createObjectURL(f);$('photoImg').src=url;$('photoPreview').style.display='block'};
+$('addCustom').onclick=()=>{const lines=$('customInput').value.split(/\n+/).map(s=>s.trim()).filter(Boolean);let added=0;for(const line of lines){const parts=line.split('|').map(s=>s.trim()),w=parts[0];if(!w)continue;let x=allWords().find(v=>norm(v.w)===norm(w));if(!x){x={unit:'错词',w,zh:parts[1]||'临时错词',ipa:parts[2]||'',pos:'',p:1};saved.custom.push(x)}const k=keyOf(x);if(!saved.wrongPool.includes(k))saved.wrongPool.push(k);added++}$('customInput').value='';save();toast(`已加入 ${added} 个词`)};
+$('clearWrong').onclick=()=>{if(confirm('只清空“历史错词池”，不会删除每个词的学习次数。确定吗？')){saved.wrongPool=[];save();toast('错词池已清空')}};
+$('resetBtn').onclick=()=>{if(confirm('将清空所有开花、错词和学习记录，但保留固定 Unit 1 词库。确定吗？')){saved.progress={};saved.wrongPool=[];saved.sessions=[];queue=[];idx=0;markedWrong=new Set();sessionFinalized=false;save();$('cardInner').className='empty';$('cardInner').innerHTML='<h2>进度已重置</h2><p>重新选择范围并开始即可。</p>';toast('已重置全部学习进度')}};
+$('exportBtn').onclick=()=>{const rows=[['unit','word','meaning','priority','star','attempts','right','wrong','streak','flower','lastRound','lastResult','lastDate']];allWords().forEach(x=>{const p=prog(x);rows.push([x.unit||'U1',x.w,x.zh,x.p||1,x.star?'yes':'no',p.attempts,p.right,p.wrong,p.streak,p.flower?'yes':'no',p.lastRound,p.lastResult,p.lastDate])});const csv='\ufeff'+rows.map(r=>r.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');downloadBlob(csv,'八年级单词学习记录_教师版.csv','text/csv;charset=utf-8')};
+function downloadBlob(data,name,type){const blob=new Blob([data],{type}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+$('backupBtn').onclick=()=>downloadBlob(JSON.stringify({version:3,exportedAt:new Date().toISOString(),data:saved},null,2),'八年级单词闪回器_备份.json','application/json');
+$('importBtn').onclick=()=>$('importFile').click();
+$('importFile').onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const reader=new FileReader();reader.onload=()=>{try{const obj=JSON.parse(reader.result);const d=obj.data||obj;if(!d.progress||!Array.isArray(d.wrongPool))throw new Error('invalid');saved=d;saved.custom ||= [];saved.sessions ||= [];save();toast('备份导入成功')}catch(err){alert('无法识别这个备份文件。')}};reader.readAsText(f)};
+
+$('round').onchange=renderStats;
+$('closeDone').onclick=()=>$('doneModal').classList.remove('show');
+$('nextRoundBtn').onclick=()=>{$('doneModal').classList.remove('show');const r=Math.min(Number($('round').value)+1,5);$('round').value=String(r);startRound()};
+$('doneModal').onclick=e=>{if(e.target===$('doneModal'))$('doneModal').classList.remove('show')};
+
+let wakeLock=null;
+$('wakeBtn').onclick=async()=>{try{if(!('wakeLock' in navigator)){toast('当前浏览器不支持屏幕常亮');return}if(wakeLock){await wakeLock.release();wakeLock=null;$('wakeBtn').textContent='☀️';toast('已关闭屏幕常亮')}else{wakeLock=await navigator.wakeLock.request('screen');$('wakeBtn').textContent='🌞';toast('屏幕常亮已开启');wakeLock.addEventListener('release',()=>{$('wakeBtn').textContent='☀️';wakeLock=null})}}catch(e){toast('屏幕常亮需要 HTTPS 或浏览器授权')}};
+$('fullBtn').onclick=async()=>{try{if(!document.fullscreenElement){await document.documentElement.requestFullscreen();$('fullBtn').textContent='✕'}else{await document.exitFullscreen();$('fullBtn').textContent='⛶'}}catch(e){toast('当前浏览器不支持网页全屏')}};
+document.addEventListener('fullscreenchange',()=>{$('fullBtn').textContent=document.fullscreenElement?'✕':'⛶'});
+
+let touchStartX=0,touchStartY=0;
+$('flashCard').addEventListener('touchstart',e=>{const t=e.changedTouches[0];touchStartX=t.clientX;touchStartY=t.clientY},{passive:true});
+$('flashCard').addEventListener('touchend',e=>{if(!queue.length)return;const t=e.changedTouches[0],dx=t.clientX-touchStartX,dy=t.clientY-touchStartY;if(Math.abs(dx)<70||Math.abs(dx)<Math.abs(dy)*1.25)return;if(dx<0)window.nextCard();else window.prevCard()},{passive:true});
+
+// 尝试兼容 V2 数据：若 V3 为空且存在 V2 数据，则自动迁移。
+try{if(!Object.keys(saved.progress).length&&!saved.wrongPool.length&&!saved.custom.length){const old=JSON.parse(localStorage.getItem('flashback_grade8_teacher_v2')||'null');if(old){saved=old;saved.progress ||= {};saved.wrongPool ||= [];saved.custom ||= [];saved.sessions ||= [];save();toast('已迁移 V2 学习记录')}}}catch(e){}
+renderAll();
+</script>
+</body>
+</html>
