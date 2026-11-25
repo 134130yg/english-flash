@@ -1,11 +1,18 @@
-# english-flash
-English vocabulary flashback tool
 # English Flashback
 ### AI-Assisted Vocabulary Practice & Error Tracking Tool
 
 An interactive, mobile-friendly vocabulary learning tool designed to support structured English dictation, error tracking, and personalized revision.
 
 **[Live Demo](https://134130yg.github.io/english-flash/)** | **[GitHub Repository](https://github.com/134130yg/english-flash)**
+
+## Product Screenshots | 产品界面展示
+
+| Session Setup | Vocabulary Flashcard | Error Tracking |
+|:---:|:---:|:---:|
+| <img src="./01-home.png" width="240" alt="Vocabulary session setup" /> | <img src="./02-flashcard.png" width="240" alt="Vocabulary flashcard" /> | <img src="./03-errors.png" width="240" alt="Error tracking dashboard" /> |
+| 听写配置与开始 | 互动词卡与学习操作 | 错词记录与针对性复习 |
+
+*Screenshots captured from the actual V4 web application. Demonstration records are used where applicable.*
 
 ## 01. Project Overview | 项目背景
 
